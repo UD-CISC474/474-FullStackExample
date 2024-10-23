@@ -48,6 +48,10 @@ export class SecurityController {
         });
     }
 
+    public getAuthorize = async (req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> => {
+        //renew the token.
+        res.send({ token: this.makeToken(req.body.user) });
+    }
     
     /* postLogin(req: express.Request, res: express.Response): Promise<void>
         @param {express.Request} req: The request object

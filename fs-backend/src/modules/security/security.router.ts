@@ -1,5 +1,6 @@
 import express from "express";
 import {SecurityController} from "./security.controller";
+import { SecurityMiddleware } from "./security.middleware";
 
 /* SecurityRouter
     * @class: SecurityRouter
@@ -18,6 +19,7 @@ export class SecurityRouter {
     public getRouter(): express.Router {
         this.router.post("/login", this.controller.postLogin);
         this.router.post("/register", this.controller.postRegister);
+        this.router.get("/authorize",[SecurityMiddleware.validateUser], this.controller.getAuthorize);
         return this.router;
     }
 }

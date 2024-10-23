@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.SecurityRouter = void 0;
 const express_1 = __importDefault(require("express"));
 const security_controller_1 = require("./security.controller");
+const security_middleware_1 = require("./security.middleware");
 /* SecurityRouter
     * @class: SecurityRouter
     * @remarks: A class that contains the routes for the security module
@@ -24,6 +25,7 @@ class SecurityRouter {
     getRouter() {
         this.router.post("/login", this.controller.postLogin);
         this.router.post("/register", this.controller.postRegister);
+        this.router.get("/authorize", [security_middleware_1.SecurityMiddleware.validateUser], this.controller.getAuthorize);
         return this.router;
     }
 }

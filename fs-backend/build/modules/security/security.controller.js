@@ -28,6 +28,10 @@ class SecurityController {
     constructor() {
         this.mongoDBService = new mongodb_service_1.MongoDBService(process.env.mongoConnectionString || "mongodb://localhost:27017");
         this.settings = new security_settings_1.SecuritySettings();
+        this.getAuthorize = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
+            //renew the token.
+            res.send({ token: this.makeToken(req.body.user) });
+        });
         /* postLogin(req: express.Request, res: express.Response): Promise<void>
             @param {express.Request} req: The request object
                     expects username and password in body of request
