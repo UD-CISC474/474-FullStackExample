@@ -30,7 +30,7 @@ export class LoginService {
 
   public loggedIn: ReplaySubject<boolean> = new ReplaySubject<boolean>(1);
 
-  //verifies the token with the server
+  //verifies the token with the server and refreshes it.
   public async authorize(): Promise<boolean> {
     return new Promise((resolve, reject) => {
       this.httpClient.get<TokenResponseObject>(Config.apiBaseUrl + '/security/authorize').subscribe({
