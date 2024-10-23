@@ -76,12 +76,12 @@ export class SecurityController {
                     }
                     bcrypt.compare(user.password, dbUser.password, (err, result) => {
                         if (err) {
-                            throw { error: "Password comparison failed" };
+                            res.send({ error: "Password comparison failed" });
                         } else if (result) {
                             dbUser.password = "****";
                             res.send({ token: this.makeToken(dbUser) });
                         } else {
-                            throw { error: "Password does not match" };
+                            res.send({ error: "Password does not match" });
                         }
                     });
                 } catch (err) {

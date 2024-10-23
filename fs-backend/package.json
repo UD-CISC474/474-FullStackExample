@@ -13,7 +13,8 @@
     "bcryptjs": "^2.4.3",
     "express": "^4.21.0",
     "jsonwebtoken": "^9.0.2",
-    "tsdoc": "^0.0.4"
+    "tsdoc": "^0.0.4",
+    "typescript": "^5.6.3"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
