@@ -1,24 +1,31 @@
 import { Component, OnInit } from '@angular/core';
 import { LoginService } from '../../services/login.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })
-export class HeaderComponent implements OnInit {
-  constructor(private _loginSvc:LoginService){}
-  ngOnInit(): void {
-    this._loginSvc.login("silber@udel.edu","pass").then(async (result)=>{
-      console.log("Login result: "+result);
-      console.log("Token: "+this._loginSvc.token);
-      let res=await this._loginSvc.authorize();
-      console.log("Authorize result: "+res);
-    }).catch((error)=>{
-      console.error("Login error: "+error);
-    });
-  
+export class HeaderComponent  {
+  public disableLogin: boolean = false;
+  public authenticated: boolean = false;
+  constructor(private _loginSvc:LoginService){
+    _loginSvc.loggedIn.subscribe(this.onLoginChange);    
+  }
+
+  onLoginChange=(loggedIn: boolean)=>{
+    this.authenticated = loggedIn;
+    console.log("Change:"+this.authenticated)
+  }
+  logout(){
+    this._loginSvc.logout();
+  }
+  async login(){
+    this.disableLogin=true;
+    await this._loginSvc.login("silber@udel.edu","pass");
+    this.disableLogin=false;
   }
 }

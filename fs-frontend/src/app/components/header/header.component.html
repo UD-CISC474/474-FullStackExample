@@ -1,1 +1,9 @@
 <p>header works!</p>
+<div *ngIf="authenticated">
+	  <p>Authenticated</p>
+	  <button (click)="logout()" >Logout</button>
+</div>
+<div *ngIf="!authenticated">
+	  <p>Not Authenticated</p>
+	  <button (click)="login()" [disabled]="disableLogin">Login</button>
+</div>
