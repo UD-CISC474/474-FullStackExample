@@ -18,8 +18,8 @@ export class InventoryRouter {
         @remarks: creates the routes for this router
     */
     public getRouter(): express.Router {
-        this.router.get("/", [SecurityMiddleware.validateUser], this.controller.getInventory);
-		this.router.get("/:id", [SecurityMiddleware.validateUser], this.controller.getItem);
+        this.router.get("/", [], this.controller.getInventory);
+		this.router.get("/:id", [], this.controller.getItem);
 		this.router.post("/", [SecurityMiddleware.validateUser,SecurityMiddleware.hasRole("admin")], this.controller.postAddItem);
 		this.router.put("/:id", [SecurityMiddleware.validateUser,SecurityMiddleware.hasRole("admin")], this.controller.putUpdateItem);
 		this.router.delete("/:id", [SecurityMiddleware.validateUser,SecurityMiddleware.hasRole("admin")], this.controller.deleteItem);

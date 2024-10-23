@@ -1,0 +1,12 @@
+<div class="item">
+  <div class="left">
+    {{ item.name }}
+    <br />
+    {{ item.description }}
+    <br />
+    {{ item.price }}
+  </div>
+  <div class="right">
+    <button mat-raised-button [disabled]="!canAddToCart">Add to cart</button>
+  </div>
+</div>

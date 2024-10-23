@@ -23,8 +23,8 @@ class InventoryRouter {
         @remarks: creates the routes for this router
     */
     getRouter() {
-        this.router.get("/", [security_middleware_1.SecurityMiddleware.validateUser], this.controller.getInventory);
-        this.router.get("/:id", [security_middleware_1.SecurityMiddleware.validateUser], this.controller.getItem);
+        this.router.get("/", [], this.controller.getInventory);
+        this.router.get("/:id", [], this.controller.getItem);
         this.router.post("/", [security_middleware_1.SecurityMiddleware.validateUser, security_middleware_1.SecurityMiddleware.hasRole("admin")], this.controller.postAddItem);
         this.router.put("/:id", [security_middleware_1.SecurityMiddleware.validateUser, security_middleware_1.SecurityMiddleware.hasRole("admin")], this.controller.putUpdateItem);
         this.router.delete("/:id", [security_middleware_1.SecurityMiddleware.validateUser, security_middleware_1.SecurityMiddleware.hasRole("admin")], this.controller.deleteItem);
