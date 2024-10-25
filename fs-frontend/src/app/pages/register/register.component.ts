@@ -6,29 +6,31 @@ import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { Router, RouterLink } from '@angular/router';
+import { passwordMatchValidator, PasswordStrengthValidator } from './password-validators';
 
 @Component({
-  selector: 'app-login',
+  selector: 'app-register',
   standalone: true,
   imports: [CommonModule,ReactiveFormsModule,RouterLink,MatCardModule,MatFormFieldModule,MatButtonModule,MatInputModule],
-  templateUrl: './login.component.html',
-  styleUrl: './login.component.scss'
+  templateUrl: './register.component.html',
+  styleUrl: './register.component.scss'
 })
-export class LoginComponent {
-  
-  loginForm: FormGroup = new FormGroup({
+export class RegisterComponent {
+  registerForm: FormGroup = new FormGroup({
     email: new FormControl(null, [Validators.required, Validators.email]),
-    password: new FormControl(null, [Validators.required]),
-  });
+    password: new FormControl(null, [PasswordStrengthValidator]),
+    password2: new FormControl(null, []),
+  },{validators:passwordMatchValidator()});
 
   constructor(
     private router: Router
   ) { }
 
-  login() {
-    if (!this.loginForm.valid) {
+  register() {
+    if (!this.registerForm.valid) {
       return;
     }
   }
 
 }
+

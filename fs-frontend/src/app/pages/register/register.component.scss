@@ -16,6 +16,7 @@
 		mat-form-field {
 		  width: 100%;
 		  min-width: 300px;
+		  margin-bottom:10px;
 		}
   
 		.error {
@@ -30,5 +31,8 @@
 		  justify-content: flex-end;
 		}
 	  }
+	}
+	mat-hint{
+		color: var(--mat-form-field-error-text-color, var(--mat-app-error));	
 	}
   }

@@ -1,0 +1,76 @@
+<div>
+  <mat-card>
+    <mat-card-title>Register</mat-card-title>
+    <mat-card-content>
+      <form [formGroup]="registerForm" (ngSubmit)="register()">
+        <mat-form-field>
+          <mat-label>Email</mat-label>
+          <input
+            type="email"
+            matInput
+            placeholder="Email"
+            formControlName="email"
+          />
+          <!-- Here we can display error messages/hints for the user, if one of the Validators adds an error to the email 
+			 with the .touched check we only display the hints if the input was touched by the users -->
+          <mat-error
+            *ngIf="
+              this.registerForm.get('email')?.touched &&
+              this.registerForm.get('email')?.hasError('required')
+            "
+          >
+            Email is required</mat-error
+          >
+          <mat-error
+            *ngIf="
+              this.registerForm.get('email')?.touched &&
+              this.registerForm.get('email')?.hasError('email')
+            "
+          >
+            Email must be a valid Email</mat-error
+          >
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Password*</mat-label>
+          <input
+            type="password"
+            matInput
+            placeholder="Password*"
+            formControlName="password"
+          />
+          <mat-error
+            *ngIf="
+              this.registerForm.get('password')?.hasError('passwordStrength')
+            "
+          >
+            {{
+              this.registerForm.get("password")?.getError("passwordStrength")
+            }}
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Repeat Password*</mat-label>
+          <input
+            type="password"
+            matInput
+            placeholder="Repeat Password*"
+            formControlName="password2"
+          />
+		  <!-- This should be a mat-error, but it doesn't update since the validator is on the parent form, so we use a hint and style it as an error -->
+          <mat-hint
+		  		*ngIf="registerForm.errors?.['passwordMismatch']">
+            	Passwords do not match</mat-hint>
+        </mat-form-field>
+        <div class="button">
+          <!-- Button is disabled(not clickable), if our registerForm contains Validation Errors -->
+          <button type="submit" mat-button [disabled]="!registerForm.valid">
+            Login
+          </button>
+        </div>
+        Already have an account yet? <a [routerLink]="['../login']">Sign In</a>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>
