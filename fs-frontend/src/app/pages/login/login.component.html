@@ -22,9 +22,9 @@
 			  *ngIf="this.loginForm.get('password')?.touched && this.loginForm.get('password')?.hasError('required')">
 			  Password is required</mat-error>
 		  </mat-form-field>
-		  <div class="error">
+		  <mat-error>
 			{{errorMsg}}&nbsp;
-		  </div>
+		  </mat-error>
 		  <div class="button">
 			<!-- Button is disabled(not clickable), if our LoginForm contains Validation Errors -->
 			<button type="submit" mat-button [disabled]="!loginForm.valid||disableLogin">Login</button>
