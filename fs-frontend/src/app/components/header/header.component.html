@@ -3,7 +3,7 @@
     <a routerLink="/">Silber-Wares</a>
   </div>
   <div class="login-btn">
-    <button *ngIf="authenticated" mat-mini-fab (click)="logout()">Logout</button>
-    <button *ngIf="!authenticated" mat-mini-fab (click)="login()" [disabled]="disableLogin">Login</button>
+    <button *ngIf="authenticated && showButtons" mat-mini-fab (click)="logout()">Logout</button>
+    <button *ngIf="!authenticated && showButtons" mat-mini-fab routerLink="/login" [disabled]="disableLogin">Login</button>
   </div>
 </mat-toolbar>
