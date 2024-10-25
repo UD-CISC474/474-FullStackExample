@@ -19,6 +19,7 @@ export class InventoryRouter {
     */
     public getRouter(): express.Router {
         this.router.get("/", [], this.controller.getInventory);
+        this.router.get("/count", [], this.controller.getInventoryCount);
 		this.router.get("/:id", [], this.controller.getItem);
 		this.router.post("/", [SecurityMiddleware.validateUser,SecurityMiddleware.hasRole("admin")], this.controller.postAddItem);
 		this.router.put("/:id", [SecurityMiddleware.validateUser,SecurityMiddleware.hasRole("admin")], this.controller.putUpdateItem);

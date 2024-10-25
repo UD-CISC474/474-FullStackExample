@@ -8,10 +8,25 @@ import { Config } from '../config';
 })
 export class ItemService {
   constructor(private httpClient: HttpClient) {}
+  public pageSize:number=Config.pageSize;
 
-  public getInventoryItems(): Promise<InventoryItemModel[]> {
+  public getInventoryCount(): Promise<number> {
+    return new Promise<number>((resolve, reject) => {
+      this.httpClient.get<{count:number}>(`${Config.apiBaseUrl}/items/count`).subscribe({
+        next: (data) => {
+          resolve(data.count);
+        },
+        error: (err) => {
+          reject(err);
+        },
+      })
+    });
+  }
+  public getInventoryItems(page:number): Promise<InventoryItemModel[]> {
+    const start=page*this.pageSize;
+    const end=start+this.pageSize-1;
     return new Promise<InventoryItemModel[]>(async (resolve, reject) => {
-      this.httpClient.get<InventoryItemModel[]>(Config.apiBaseUrl+'/items/').subscribe({
+      this.httpClient.get<InventoryItemModel[]>(`${Config.apiBaseUrl}/items/?start=${start}&end=${end}`).subscribe({
         next: (data) => {
           resolve(data);
         },

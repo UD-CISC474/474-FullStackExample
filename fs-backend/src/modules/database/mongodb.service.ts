@@ -35,9 +35,23 @@ export class MongoDBService {
 			return null;
 		}
 	}
-	public async find<T>(database: string, collection: string, query: any): Promise<T[]> {
+	public async count(database: string, collection: string, query: any): Promise<number> {
 		try {
-			const result = await this.client.db(database).collection(collection).find(query).toArray();
+			const result = await this.client.db(database).collection(collection).countDocuments(query);
+			return result;
+		} catch (err) {
+			console.error("Error counting documents in " + collection + ":", err)
+			return 0;
+		}
+	}
+	public async find<T>(database: string, collection: string, query: any,start:number=0,end:number=0): Promise<T[]> {
+		try {
+			let result=[];
+			if (start>=0 && end>start){
+				result = await this.client.db(database).collection(collection).find(query).skip(start).limit(end-start+1).toArray();
+			}else{
+				result = await this.client.db(database).collection(collection).find(query).toArray();
+			}
 			return result as T[];
 		} catch (err) {
 			console.error("Error finding documents in " + collection + ":", err)

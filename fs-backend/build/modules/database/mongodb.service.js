@@ -55,10 +55,28 @@ class MongoDBService {
             }
         });
     }
-    find(database, collection, query) {
+    count(database, collection, query) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const result = yield this.client.db(database).collection(collection).find(query).toArray();
+                const result = yield this.client.db(database).collection(collection).countDocuments(query);
+                return result;
+            }
+            catch (err) {
+                console.error("Error counting documents in " + collection + ":", err);
+                return 0;
+            }
+        });
+    }
+    find(database_1, collection_1, query_1) {
+        return __awaiter(this, arguments, void 0, function* (database, collection, query, start = 0, end = 0) {
+            try {
+                let result = [];
+                if (start >= 0 && end > start) {
+                    result = yield this.client.db(database).collection(collection).find(query).skip(start).limit(end - start + 1).toArray();
+                }
+                else {
+                    result = yield this.client.db(database).collection(collection).find(query).toArray();
+                }
                 return result;
             }
             catch (err) {

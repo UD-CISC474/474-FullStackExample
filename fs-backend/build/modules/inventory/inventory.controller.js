@@ -22,21 +22,49 @@ class InventoryController {
     constructor() {
         this.mongoDBService = new mongodb_service_1.MongoDBService(process.env.mongoConnectionString || "mongodb://localhost:27017");
         this.settings = new inventory_settings_1.InventorySettings();
-        /* getInventory(req: express.Request, res: express.Response): Promise<void>
+        /* getInventoryCount(req: express.Request, res: express.Response): Promise<void>
             @param {express.Request} req: The request object
             @param {express.Response} res: The response object
             @returns {Promise<void>}:
-            @remarks: Handles the get inventory request
+            @remarks: Handles the get inventory count request
             @async
         */
-        this.getInventory = (req, res) => __awaiter(this, void 0, void 0, function* () {
+        this.getInventoryCount = (req, res) => __awaiter(this, void 0, void 0, function* () {
             try {
                 let result = yield this.mongoDBService.connect();
                 if (!result) {
                     res.status(500).send({ error: "Database connection failed" });
                     return;
                 }
-                let items = yield this.mongoDBService.find(this.settings.database, this.settings.collection, {});
+                let count = yield this.mongoDBService.count(this.settings.database, this.settings.collection, {});
+                res.send({ count: count });
+            }
+            catch (error) {
+                res.status(500).send({ error: error });
+            }
+        });
+        /* getInventory(req: express.Request, res: express.Response): Promise<void>
+            @param {express.Request} req: The request object
+            @param {express.Response} res: The response object
+            @returns {Promise<void>}:
+            @remarks: Handles the get inventory request.  If the request has query parameters, start and end, it will return the records between those two
+            Otherwise it will return all records
+            @async
+        */
+        this.getInventory = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            let items = [];
+            try {
+                let result = yield this.mongoDBService.connect();
+                if (!result) {
+                    res.status(500).send({ error: "Database connection failed" });
+                    return;
+                }
+                if (req.query.start && req.query.end) {
+                    items = yield this.mongoDBService.find(this.settings.database, this.settings.collection, {}, parseInt(req.query.start), parseInt(req.query.end));
+                }
+                else {
+                    items = yield this.mongoDBService.find(this.settings.database, this.settings.collection, {});
+                }
                 res.send(items);
             }
             catch (error) {

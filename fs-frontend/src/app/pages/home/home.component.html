@@ -1,0 +1,18 @@
+<div class="home">
+  <div class="item-container">
+    <div mat-card *ngFor="let item of items" class="item mat-elevation-z4">
+      <app-item [item]="item"></app-item>
+    </div>
+  </div>
+  <mat-paginator
+    #paginator
+    class="paginator"
+    (page)="handlePageEvent($event)"
+    aria-label="Select page"
+    [pageSize]="pageSize"
+    [length]="itemCount"
+    showFirstLastButtons="true"
+    [pageIndex]="pageIndex"
+  >
+  </mat-paginator>
+</div>

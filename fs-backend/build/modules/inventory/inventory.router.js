@@ -24,6 +24,7 @@ class InventoryRouter {
     */
     getRouter() {
         this.router.get("/", [], this.controller.getInventory);
+        this.router.get("/count", [], this.controller.getInventoryCount);
         this.router.get("/:id", [], this.controller.getItem);
         this.router.post("/", [security_middleware_1.SecurityMiddleware.validateUser, security_middleware_1.SecurityMiddleware.hasRole("admin")], this.controller.postAddItem);
         this.router.put("/:id", [security_middleware_1.SecurityMiddleware.validateUser, security_middleware_1.SecurityMiddleware.hasRole("admin")], this.controller.putUpdateItem);

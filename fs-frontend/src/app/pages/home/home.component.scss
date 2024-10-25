@@ -1,0 +1,20 @@
+.item-container{
+    position:relative;
+    width:100%;
+    margin:5px;
+    flex:1;
+}
+.item{
+    margin:15px;
+    display:inline-block;
+    position:relative;
+}
+.home{
+    display: flex;
+    flex-direction:column;
+    position:absolute;
+    top:0;
+    left:0;
+    bottom:0;
+    right:0;
+}
