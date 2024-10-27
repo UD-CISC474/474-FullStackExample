@@ -30,6 +30,19 @@ export class LoginService {
 
   public loggedIn: ReplaySubject<boolean> = new ReplaySubject<boolean>(1);
 
+  public async isAdmin(): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+      this.httpClient.get<boolean>(Config.apiBaseUrl + '/security/hasRole/admin').subscribe({
+        next: (response) => {
+          resolve(response);
+        },
+        error: (error) => {
+          reject(error);
+        }
+      });
+    });
+  }
+
   //verifies the token with the server and refreshes it.
   public async authorize(): Promise<boolean> {
     return new Promise((resolve, reject) => {

@@ -32,6 +32,15 @@ class SecurityController {
             //renew the token.
             res.send({ token: this.makeToken(req.body.user) });
         });
+        this.getHasRole = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
+            //check if the user has the role
+            if (req.body.user.roles.indexOf(req.params.role) > -1) {
+                next();
+            }
+            else {
+                res.status(401).send({ error: "Unauthorized" });
+            }
+        });
         /* postLogin(req: express.Request, res: express.Response): Promise<void>
             @param {express.Request} req: The request object
                     expects username and password in body of request

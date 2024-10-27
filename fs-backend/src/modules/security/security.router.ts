@@ -20,6 +20,7 @@ export class SecurityRouter {
         this.router.post("/login", this.controller.postLogin);
         this.router.post("/register", this.controller.postRegister);
         this.router.get("/authorize",[SecurityMiddleware.validateUser], this.controller.getAuthorize);
+        this.router.get("/hasrole/:role",[SecurityMiddleware.validateUser], this.controller.getHasRole);
         return this.router;
     }
 }
