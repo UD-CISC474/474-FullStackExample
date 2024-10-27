@@ -65,11 +65,18 @@
         </mat-form-field>
         <div class="button">
           <!-- Button is disabled(not clickable), if our registerForm contains Validation Errors -->
-          <button type="submit" mat-button [disabled]="!registerForm.valid">
-            Login
+          <button type="submit" mat-button  [disabled]="!registerForm.valid||disableRegister">
+            Sign Up
           </button>
         </div>
-        Already have an account yet? <a [routerLink]="['../login']">Sign In</a>
+        <!-- /* *********************************NOTE*********************************/
+             /* The &nbsp serves two purposes here.  It indents the error message    */
+             /* as well as guaranteeing that the mat-error has a consistent height   */
+             /* i.e. it is never empty (always has a space in it at least).          */
+             /* *********************************NOTE*********************************/
+   -->
+        <mat-error>&nbsp;&nbsp;{{errorMsg}}</mat-error>
+        <p>Already have an account yet? <a [routerLink]="['../login']">Sign In</a></p>
       </form>
     </mat-card-content>
   </mat-card>

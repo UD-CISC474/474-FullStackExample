@@ -14,7 +14,11 @@ export class AdminGuardService implements CanActivate {
       this._loginSvc.authorize().then((res) => {
         if(res){
           this._loginSvc.isAdmin().then((res) => {
-            resolve(res);
+            if (res) resolve(res);
+            else {
+              this._router.navigate(['/login']);
+              resolve(false);
+            }
           }).catch((err) => {
             console.error(err);
             this._router.navigate(['/login']);

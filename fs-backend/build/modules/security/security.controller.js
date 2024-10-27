@@ -35,10 +35,10 @@ class SecurityController {
         this.getHasRole = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
             //check if the user has the role
             if (req.body.user.roles.indexOf(req.params.role) > -1) {
-                next();
+                res.send({ hasRole: true });
             }
             else {
-                res.status(401).send({ error: "Unauthorized" });
+                res.send({ hasRole: false });
             }
         });
         /* postLogin(req: express.Request, res: express.Response): Promise<void>
@@ -125,7 +125,7 @@ class SecurityController {
                         throw { error: "Database insert failed" };
                     }
                     dbUser.password = "****";
-                    res.send({ token: this.makeToken(dbUser) });
+                    return res.send({ token: this.makeToken(dbUser) });
                 }
                 catch (err) {
                     console.error(err);

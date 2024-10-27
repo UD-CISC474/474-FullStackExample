@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Config } from '../config';
 import { ReplaySubject } from 'rxjs';
+import { Router } from '@angular/router';
 
 interface TokenResponseObject {
   token: string;
@@ -12,7 +13,7 @@ interface TokenResponseObject {
 })
 export class LoginService {
 
-  constructor(private httpClient: HttpClient) { 
+  constructor(private httpClient: HttpClient,private _router:Router) { 
     this.loggedIn.next(this.token.length > 0);
   }
   /* *********************************NOTE*********************************/
@@ -32,9 +33,9 @@ export class LoginService {
 
   public async isAdmin(): Promise<boolean> {
     return new Promise((resolve, reject) => {
-      this.httpClient.get<boolean>(Config.apiBaseUrl + '/security/hasRole/admin').subscribe({
+      this.httpClient.get<{hasRole:boolean}>(Config.apiBaseUrl + '/security/hasrole/admin').subscribe({
         next: (response) => {
-          resolve(response);
+          resolve(response.hasRole);
         },
         error: (error) => {
           reject(error);
@@ -77,6 +78,8 @@ export class LoginService {
           }
         },
         error: (error) => {
+          this.token="";
+          console.error(error);
           reject(error);
         }
       });
@@ -86,4 +89,25 @@ export class LoginService {
     this.token = '';
   }
 
+  public async register(username: string, password: string): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+      this.httpClient.post<TokenResponseObject>(Config.apiBaseUrl+"/security/register", { username: username, password: password }).subscribe({
+        next: (response) => {
+          if (response.token && response.token.length > 0) {
+            this.token = response.token;
+            this._router.navigate(['/home']);
+            resolve(true);
+          } else {
+            this.token = "";
+            resolve(false);
+          }
+        },
+        error: (error) => {
+          this.token="";
+          console.error(error);
+          reject(error);
+        }
+      });
+    });
+  }
 }

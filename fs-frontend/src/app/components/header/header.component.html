@@ -2,8 +2,16 @@
   <div class="title">
     <a routerLink="/">Silber-Wares</a>
   </div>
-  <div class="login-btn">
-    <button *ngIf="authenticated && showButtons" mat-mini-fab (click)="logout()">Logout</button>
-    <button *ngIf="!authenticated && showButtons" mat-mini-fab routerLink="/login" [disabled]="disableLogin">Login</button>
+  <div class="login-btn" *ngIf="authenticated && showButtons">
+    <button *ngIf="isAdmin" mat-mini-fab routerLink="/admin">
+      Admin
+    </button>&nbsp;&nbsp;
+    <button mat-mini-fab routerLink="/cart">
+      Cart
+    </button>&nbsp;&nbsp;
+    <button  mat-mini-fab (click)="logout()">Logout</button>
+  </div>
+  <div class="login-btn" *ngIf="!authenticated && showButtons">
+  <button *ngIf="!authenticated && showButtons" mat-mini-fab routerLink="/login" [disabled]="disableLogin">Login</button>
   </div>
 </mat-toolbar>

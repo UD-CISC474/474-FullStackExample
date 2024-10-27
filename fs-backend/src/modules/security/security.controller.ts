@@ -56,12 +56,12 @@ export class SecurityController {
     public getHasRole = async (req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> => {
         //check if the user has the role
         if(req.body.user.roles.indexOf(req.params.role)>-1){
-            next();
+            res.send({hasRole:true});
         }else{
-            res.status(401).send({error:"Unauthorized"});
+            res.send({hasRole:false})
         }
     }
-    
+
     /* postLogin(req: express.Request, res: express.Response): Promise<void>
         @param {express.Request} req: The request object
                 expects username and password in body of request
@@ -141,7 +141,7 @@ export class SecurityController {
                     throw { error: "Database insert failed" };
                 }
                 dbUser.password = "****";
-                res.send({ token: this.makeToken(dbUser) });
+                return res.send({ token: this.makeToken(dbUser) });
             } catch (err) {
                 console.error(err);
                 res.status(500).send(err);
