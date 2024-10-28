@@ -125,7 +125,7 @@ class SecurityController {
                         throw { error: "Database insert failed" };
                     }
                     dbUser.password = "****";
-                    return res.send({ token: this.makeToken(dbUser) });
+                    res.send({ token: this.makeToken(dbUser) });
                 }
                 catch (err) {
                     console.error(err);
