@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Config } from '../config';
 import { ReplaySubject } from 'rxjs';
 import { Router } from '@angular/router';
+import { UserLoginModel } from '../models/users.model';
 
 interface TokenResponseObject {
   token: string;
@@ -25,17 +26,21 @@ export class LoginService {
     return localStorage.getItem('token') || '';
   }
   public set token(value: string) {
-    this.loggedIn.next(value.length > 0);
     localStorage.setItem('token', value);
+    this.loggedIn.next(value.length > 0);
   }
 
   public loggedIn: ReplaySubject<boolean> = new ReplaySubject<boolean>(1);
 
-  public async isAdmin(): Promise<boolean> {
+  
+  public async hasRole(role:string): Promise<boolean> {
     return new Promise((resolve, reject) => {
-      this.httpClient.get<{hasRole:boolean}>(Config.apiBaseUrl + '/security/hasrole/admin').subscribe({
+      this.httpClient.get<UserLoginModel>(Config.apiBaseUrl + `/security/user`).subscribe({
         next: (response) => {
-          resolve(response.hasRole);
+          if (response.roles)
+            resolve(response.roles.indexOf(role) >= 0);
+          else
+            resolve(false);
         },
         error: (error) => {
           reject(error);

@@ -34,9 +34,11 @@ export class HeaderComponent  {
 
   onLoginChange=async (loggedIn: boolean)=>{
     this.authenticated = loggedIn;
-    this.isAdmin = await this._loginSvc.isAdmin();
-    console.log("Change:"+this.authenticated)
+    this.isAdmin=false;
+    if (this.authenticated)
+      this.isAdmin = await this._loginSvc.hasRole("admin");
   }
+  
   logout(){
     this._loginSvc.logout();
     this.router.navigate(['/login']);

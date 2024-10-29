@@ -53,13 +53,9 @@ export class SecurityController {
         res.send({ token: this.makeToken(req.body.user) });
     }
     
-    public getHasRole = async (req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> => {
-        //check if the user has the role
-        if(req.body.user.roles.indexOf(req.params.role)>-1){
-            res.send({hasRole:true});
-        }else{
-            res.send({hasRole:false})
-        }
+    public getUser = async (req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> => {
+        //send the user
+        res.send(req.body.user);
     }
 
     /* postLogin(req: express.Request, res: express.Response): Promise<void>

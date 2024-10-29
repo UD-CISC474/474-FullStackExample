@@ -1,35 +1,37 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { LoginService } from '../services/login.service';
-import { ActivatedRouteSnapshot, CanActivate, GuardResult, MaybeAsync, Router, RouterStateSnapshot } from '@angular/router';
+import { ActivatedRouteSnapshot, GuardResult, MaybeAsync, Router, RouterStateSnapshot } from '@angular/router';
 
-@Injectable({
-  providedIn: 'root'
-})
-export class AdminGuardService implements CanActivate {
 
-  constructor(private _loginSvc:LoginService,private _router:Router) { }
-
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): MaybeAsync<GuardResult> {
+export function roleGuardFn(rule:string): (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => MaybeAsync<GuardResult>{
+  return (route: ActivatedRouteSnapshot, state: RouterStateSnapshot):MaybeAsync<GuardResult>=>{
+    const svc = inject(LoginService);
+    const router = inject(Router);
     return new Promise((resolve, reject) => {
-      this._loginSvc.authorize().then((res) => {
+      svc.authorize().then((res) => {
         if(res){
-          this._loginSvc.isAdmin().then((res) => {
+          svc.hasRole(rule).then((res) => {
             if (res) resolve(res);
             else {
-              this._router.navigate(['/login']);
+              router.navigate(['/login']);
               resolve(false);
             }
           }).catch((err) => {
             console.error(err);
-            this._router.navigate(['/login']);
+            router.navigate(['/login']);
             resolve(false);
           });
         }else{
-          this._router.navigate(['/login']);
+          router.navigate(['/login']);
           resolve(false);
         }
+      }).catch((err) => {
+        console.error(err);
+        router.navigate(['/login']);
+        resolve(false);
       });
     });
+    return false;
   }
 }
 
